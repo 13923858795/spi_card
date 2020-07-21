@@ -38,6 +38,9 @@
 # # df = pro.daily(ts_code='600104.SH', start_date='20180201', end_date='20200527')#
 # # df = pro.ts.pro_bar(ts_code='600104.SH', adj='qfq', start_date='20180201', end_date='20200527')
 # print(date)
-
+import time
 from app.services.TimingConfig import test_scheduler
-test_scheduler()
+
+while True:
+    test_scheduler()
+    time.sleep(5)
