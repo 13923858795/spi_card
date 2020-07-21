@@ -1,0 +1,121 @@
+
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+.container {padding-top:20px}
+.form-group {margin-right:15px;}
+label { margin-right:5px; }
+.form-inline .form-control{width:80px}
+.container, .container-lg, .container-md, .container-sm, .container-xl {
+    max-width: 1300px;
+}
+</style>
+
+    <div class="container">
+<!--      {% for model in plans %}-->
+<!--       <button type="button" class="btn btn-default">默认按钮</button>-->
+<!--      {% endfor %}-->
+
+      <div class="btn-toolbar" role="toolbar" style="margin-bottom:15px;">
+
+        {% for model in plans %}
+
+          <a href="{{ url_for('plan.lists', _id=model.id) }}">
+            <button type="button" class="btn btn-default"> {{model.name}} </button>
+          </a>
+
+
+        {% endfor %}
+
+      </div>
+
+
+
+      <form class="form-inline" role="form" action="/plan/edit" method="post">
+        {{ form.csrf_token }}
+        <div class="form-group" hidden>
+          <label class="" for="name">id:</label>
+          <input type="text" class="form-control" id="id" name="id" {% if form.id.data %} value="{{form.id.data}}" {%else%} value=0 {%endif%}>
+        </div>
+
+        <div class="form-group">
+          <label class="" for="name">名称:</label>
+          <input type="text" class="form-control" id="name" name="name" {% if form.name.data %} value="{{form.name.data}}" {%endif%} style="width:150px">
+        </div>
+
+        <div class="form-group">
+          <label class="" for="price_top">区间上限:</label>
+          <input type="text" class="form-control" id="price_top" name="price_top" {% if form.price_top.data %} value={{form.price_top.data}} {% endif%}>
+        </div>
+        <div class="form-group">
+          <label class="" for="price_bottom">区间下限:</label>
+          <input type="text" class="form-control" id="price_bottom" name="price_bottom" {% if form.price_bottom.data %} value="{{form.price_bottom.data}}"{% endif%}>
+        </div>
+
+        <div class="form-group">
+          <label class="" for="start_price">起始价格:</label>
+          <input type="text" class="form-control" id="start_price" name="start_price" {% if form.start_price.data %} value="{{form.start_price.data}}" {% endif%}>
+        </div>
+
+
+        <div class="form-group" >
+          <label for="initial_quotas" class="control-label">最初配额:</label>
+          <input type="text" class="form-control"  width="10" id="initial_quotas" name="initial_quotas"  {% if form.initial_quotas.data %} value="{{form.initial_quotas.data}}" {% endif%}>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label" for="increase_rate">仓位递增:</label>
+          <input type="text" class=" input-mini form-control" id="increase_rate" name="increase_rate"{% if form.increase_rate.data %} value="{{form.increase_rate.data}}"{% endif%}>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="reduce_rate">价格递减:</label>
+          <input type="text" class=" input-mini form-control" id="reduce_rate" name="reduce_rate" {% if form.reduce_rate.data %}value="{{form.reduce_rate.data}}"{% endif%}>
+        </div>
+
+        <button type="submit" class="btn btn-default">提交</button>
+<!--        <button type="submit" class="btn btn-default">删除</button>-->
+      </form>
+
+      利润率:{{ profit_margin }}% 利润:{{profit}}  本金:{{amount_money}}
+
+      <table class="table">
+        <caption>操作流程</caption>
+        <thead>
+        <tr>
+          <th>价格</th>
+          <th>数量</th>
+          <th>金额</th>
+          <th>累计股数</th>
+          <th>累计金额</th>
+          <th>均价</th>
+          <th>仓位</th>
+          <th>卖出股数</th>
+
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for info in data %}
+          <tr>
+            <td>{{ info.now_price }}</td>
+            <td>{{ info.buy_shares }}</td>
+            <td>{{ info.now_quotas }}</td>
+            <td>{{ info.amount_shares }}</td>
+            <td>{{ info.amount_money }}</td>
+            <td>{{ info.average_price }}</td>
+            <td>{{ info.position}}%</td>
+            <td>{{ info.sell_number }}</td>
+
+          </tr>
+        {%endfor%}
+
+        </tbody>
+      </table>
+
+    </div>
+
+
+
+
+{% endblock %}
