@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+
+        {% block page_content %}
+
+            {% if not current_user.is_authenticated %}
+                            <div class = "m-auto" >
+                                <div class="col-centered" style="width:300px;margin:0 auto;">
+                                    {{ wtf.quick_form(form) }}
+                                    <br>
+                                    <p>忘记密码 <a href="">请联系管理员</a>.</p>
+                                    <p>注册账户 <a href="{{ url_for('public.register') }}">点击注册</a>.</p>
+                                </div>
+                            </div>
+
+            {% else %}
+
+
+
+            {% endif %}
+        {% endblock %}

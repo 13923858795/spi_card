@@ -3,27 +3,36 @@
 {% block content %}
 
 
-        <p><a href="/down">下载</a></p>
-
+<p class="text-right" style="margin-right:50px;margin-top:50px;"><a href="/down" k="download">下载</a></p>
+<div>
      <table class="table">
-        <caption>操作流程</caption>
+
         <thead>
         <tr>
-          <th>内容</th>
-          <th>图片</th>
+            <th k="name">姓名</th>
+            <th k="company">公司名称</th>
+            <th k="Upload_personnel">上传人员</th>
+             <th k="delete">删除</th>
         </tr>
         </thead>
         <tbody>
-        {% for info in models %}
-          <tr>
-            <td>{{ info.date }}</td>
-            <td>1</td>
-          </tr>
+        {% for model in dates %}
+        <tr>
+            <td>{{ model.name }}</td>
+            <td>
+
+                <div style="width:100px; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                    {{ model.company }}
+                </div>
+            </td>
+            <td>{{ model.own }}</td>
+            <td> <a class="nav-link" href="{{ url_for('public.delete_card', _id=model.id) }}" k="delete">删除</a></td>
+        </tr>
         {%endfor%}
 
         </tbody>
       </table>
 
-
+</div>
 
 {% endblock %}

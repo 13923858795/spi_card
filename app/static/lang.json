@@ -1,0 +1,80 @@
+{
+  "zh": {
+    "card_download": "名片下载",
+    "Exhibition_information_input": "QUATEK展会信息录入",
+    "username": "账号",
+    "password": "密码",
+    "login": "登录",
+
+   "photograph": "拍照上传",
+    "manual_entry": "手动录入",
+    "save": "保存",
+    "name": "姓名",
+    "tel_cell": "电话",
+    "email": "邮箱",
+    "department": "部门",
+    "title": "职位",
+
+    "company": "公司名称",
+    "original_factory": "原厂",
+    "remarks": "备注",
+    "delete": "删除",
+      "Upload_personnel": "上传人员",
+    "download": "下载"
+  },
+
+   "ft": {
+    "card_download": "名片下載",
+    "Exhibition_information_input": "QUATEK展會資訊錄入 ",
+    "username": "帳號",
+    "password": "密碼",
+    "login": "登录",
+    "save": "保存",
+   "photograph": "拍照上傳",
+    "manual_entry": "手動錄入",
+
+    "name": "姓名",
+    "tel_cell": "電話",
+    "email": "郵箱",
+    "department": "部門",
+    "title": "職位",
+
+    "company": "公司名稱",
+    "original_factory": "原廠",
+    "remarks": "備註",
+
+      "Upload_personnel": "上傳人員",
+     "delete": "删除",
+     "download": "下載"
+  },
+
+  "english": {
+    "card_download": "Card Download",
+    "Exhibition_information_input": "QUATEK Exhibition information input",
+
+    "save": "save",
+    "username": "username",
+    "password": "password",
+    "login": "login",
+
+    "photograph": "photograph",
+    "manual_entry": "manual entry",
+
+    "name": "name",
+    "tel_cell": "tel",
+    "email": "email",
+    "department": "department",
+    "title": "title",
+
+    "company": "company",
+    "original_factory": "original factory",
+    "remarks": "remarks",
+
+    "Upload_personnel": "Upload personnel",
+    "delete": "delete",
+      "download": "download"
+
+  }
+
+
+}

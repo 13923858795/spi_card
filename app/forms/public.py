@@ -46,8 +46,8 @@ class FileForm(FlaskForm):
         label="图片",
         validators=[DataRequired()]
     )
-    company_url = StringField("公司网址")
-    intent = StringField("intent")
+    original_factory = StringField("源厂")
+    remarks = StringField("备注")
 
     def __init__(self, *args, **kwargs):
         """Create instance."""
@@ -64,15 +64,15 @@ class FileForm(FlaskForm):
 class CardForm(FlaskForm):
     """Login form."""
 
-    addr = StringField("地址", validators=[DataRequired()])
-    company = StringField("公司", validators=[DataRequired()])
-    company_url = StringField("公司网址")
-    department = StringField("部门", validators=[DataRequired()])
-    email = StringField("邮箱", validators=[DataRequired()])
     name = StringField("姓名", validators=[DataRequired()])
     tel_cell = StringField("电话", validators=[DataRequired()])
+    email = StringField("邮箱", validators=[DataRequired()])
+    department = StringField("部门", validators=[DataRequired()])
     title = StringField("职位", validators=[DataRequired()])
-    intent = StringField("意向")
+
+    company = StringField("公司", validators=[DataRequired()])
+    original_factory = StringField("源厂")
+    remarks = StringField("备注")
 
     def __init__(self, *args, **kwargs):
         """Create instance."""

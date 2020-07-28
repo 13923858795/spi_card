@@ -9,43 +9,32 @@ from app.database import (
     Model,
     SurrogatePK,
     db,
-    reference_col,
-    relationship,
+    reference_col
 )
 from app.extensions import bcrypt
 
 
-class Role(SurrogatePK, Model):
-    """A role for a view."""
-
-    __tablename__ = "roles"
-    name = Column(db.String(80), unique=True, nullable=False)
-    user_id = reference_col("users", nullable=True)
-    user = relationship("User", backref="roles")
-
-    def __init__(self, name, **kwargs):
-        """Create instance."""
-        db.Model.__init__(self, name=name, **kwargs)
-
-    def __repr__(self):
-        """Represent instance as a unique string."""
-        return f"<Role({self.name})>"
-
-
 class User(UserMixin, SurrogatePK, Model):
-    """A view of the app."""
-
-    __tablename__ = "users"
-
+    """A user of the app."""
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
     username = Column(db.String(80), unique=True, nullable=False)
     email = Column(db.String(80), unique=True, nullable=False)
-    #: The hashed password
-    password = Column(db.LargeBinary(128), nullable=True)
-    created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+    crm_employee_id = Column(db.String(80), unique=True, nullable=True)  # 职工crm系统 职工emp_id编号
+    nickname = Column(db.String(80), nullable=True)  # 职工名
+    english_name = Column(db.String(200), nullable=True)  # 职工英文名
+    abbreviation_name = Column(db.String(200), nullable=True)  # 英文名缩写  唯一
+    office = Column(db.String(80), nullable=True)  # 办公室名  台北，北京， 深圳，上海
+    superior_account = Column(db.String(200), nullable=True)  # 有职工没有crm管理系统账户，需要通过上级账户来查询
+    position_type = Column(db.String(200), nullable=True)  # 职工岗位类型   sales  service  等等
+    portrait_image = Column(db.String(200), nullable=True)  # 用户头像
+    password = Column(db.Binary(128), nullable=True)
+    created_at = Column(db.DateTime, nullable=False, default=dt.datetime.now)
     first_name = Column(db.String(30), nullable=True)
     last_name = Column(db.String(30), nullable=True)
     active = Column(db.Boolean(), default=False)
-    is_admin = Column(db.Boolean(), default=False)
+    roles = Column(db.Integer(), nullable=True)
+    is_leave = Column(db.Boolean(), default=False)
 
     def __init__(self, username, email, password=None, **kwargs):
         """Create instance."""
@@ -65,9 +54,9 @@ class User(UserMixin, SurrogatePK, Model):
 
     @property
     def full_name(self):
-        """Full view name."""
-        return f"{self.first_name} {self.last_name}"
+        """Full user name."""
+        return '{0} {1}'.format(self.first_name, self.last_name)
 
     def __repr__(self):
         """Represent instance as a unique string."""
-        return f"<User({self.username!r})>"
+        return '<User({username!r})>'.format(username=self.username)

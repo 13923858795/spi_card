@@ -14,8 +14,13 @@ env.read_env()
 
 ENV = env.str("FLASK_ENV", default="production")
 DEBUG = ENV == "development"
+
+SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8mb4".format(
+    env.str('SQL_USER'), env.str('SQL_PASSWORD'), env.str('SQL_HOST'), env.str('SQL_PORT'),
+    env.str('SQL_DB_NAME'))
+
 # SQLALCHEMY_DATABASE_URI = env.str("DATABASE_URL")
-SQLALCHEMY_DATABASE_URI ='sqlite:///' + os.path.join(os.getcwd(), 'data.sqlite')
+# SQLALCHEMY_DATABASE_URI ='sqlite:///' + os.path.join(os.getcwd(), 'data.sqlite')
 
 SECRET_KEY = env.str("SECRET_KEY")
 

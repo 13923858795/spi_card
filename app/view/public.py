@@ -10,9 +10,10 @@ from flask import (
     render_template,
     request,
     url_for,
-    jsonify
+    jsonify,
+    make_response
 )
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, current_user
 
 from app.extensions import login_manager
 from app.forms.public import LoginForm, FileForm, CardForm
@@ -42,11 +43,25 @@ def home():
         if form.validate_on_submit():
             login_user(form.user)
             flash("You are logged in.", "success")
-            redirect_url = request.args.get("next") or url_for("user.members")
+            redirect_url = request.args.get("next") or url_for("public.home")
             return redirect(redirect_url)
         else:
             flash_errors(form)
-    return render_template("public/home.html", form=form)
+
+    # resp = render_template("public/home.html", form=form)
+    # resp.set_cookie('lang', 'zh', max_age=7 * 24 * 3600)
+
+    if current_user.is_authenticated:
+        print(current_user.id)
+        if current_user.office == '東南亞':
+            lang = 'english'
+        elif current_user.office == '台北':
+            lang = 'ft'
+    else:
+        lang = 'zh'
+    response = make_response(render_template("public/home.html", form=form))
+    response.set_cookie('lang', lang)
+    return response
 
 
 @blueprint.route("/logout/")
@@ -106,38 +121,29 @@ def image():
             file_name = f"{int(time.time())}.{img.filename.rsplit('.', 1)[1]}"
             file_path = path + file_name
             img.save(file_path)
-            Cards.create(image=file_name, intent=form.intent.data, company_url=form.company_url.data)
+            Cards.create(image=file_name, original_factory=form.original_factory.data,
+                         remarks=form.remarks.data, own=current_user.id)
             flash("上传成功", "success")
             return render_template('public/img_update.html', form=form)
         else:
             flash_errors(form)
             return render_template('public/img_update.html', form=form)
 
-        # err = None
-        # if not img or img == '':
-        #     err = "文件不能为空"
-        # elif not allowed_file(img.filename):
-        #     err = "请检查上传的图片类型，仅限于png、PNG、jpg、JPG、bmp"
-        # if err:
-        #     flash(err, 'error')
-        #     return render_template('public/img_update.html', form=form)
-
     return render_template('public/img_update.html', form=form)
 
 
 @blueprint.route('/add', methods=['GET', 'POST'])
+@login_required
 def add():
-
     form = CardForm()
     if request.method == 'POST':
 
         if form.validate_on_submit():
-            date = json.dumps({'addr': [form.addr.data], 'company': [form.company.data],
-                               'department': [form.department.data], 'email': [form.email.data],
-                               'name': [form.name.data], "title": [form.title.data],
-                               'tel_cell': [form.tel_cell.data]}, ensure_ascii=False)
 
-            Cards.create(date=date, intent=form.intent.data, company_url=form.company_url.data, is_ok=True)
+            Cards.create(name=form.name.data, email=form.email.data,tel_cell=form.tel_cell.data,
+                         department=form.department.data,
+                         title=form.title.data, company=form.company.data, original_factory=form.original_factory.data,
+                         remarks=form.remarks.data, is_analysis=True, own=current_user.id)
 
             flash("上传成功", "success")
         else:
@@ -148,25 +154,73 @@ def add():
 
 
 @blueprint.route('/lists', methods=['GET', 'POST'])
+@login_required
 def lists():
-    models = Cards.query.filter_by().all()
 
-    return render_template('public/lists.html', models=models)
+    users = {}
+    for user in User.query.filter_by().all():
+        users[user.id] = user.nickname
+
+    date = [{
+        "id": model.id,
+        "name": model.name,
+        "tel_cell": model.tel_cell,
+        "email": model.email,
+        "department": model.department,
+        "title": model.title,
+        "company": model.company,
+        "original_factory": model.original_factory,
+        "remarks": model.remarks,
+        "own": users[model.own] if model.own else None,
+
+    } for model in Cards.query.filter_by().all()]
+
+    return render_template('public/lists.html', dates=date)
 
 
 @blueprint.route('/down', methods=['GET'])
 def down():
     date = [[
-            "姓名", "电话", "邮箱", "部门", "职位", "公司名称", "公司地址", "公司网址", "意向产品",
+            "姓名", "电话", "邮箱", "部门", "职位", "公司名称", "源厂", "备注", '上传人员'
         ]]
 
-    for model in Cards.query.filter_by(is_ok=True).all():
+    users = {}
+    for user in User.query.filter_by().all():
+        users[user.id] = user.nickname
 
-        info = json.loads(model.date)
+    for model in Cards.query.filter_by(is_analysis=True).all():
 
-        _d = [info['name'], info['tel_cell'], info['email'], info['department'], info['title'],
-              info['company'], info['addr'], model.company_url, model.intent]
+        """ 
+            name = Column(db.String(1000))
+            email = Column(db.String(500))   # 邮箱
+            tel_cell = Column(db.String(500))  # 电话
+            tel_work = Column(db.String(500))  # 工作电话
+            department = Column(db.String(500))  # 部门
+            title = Column(db.String(500))  # 头衔
+            company = Column(db.String(500))  # 公司
+            original_factory = Column(db.String(500))
+            remarks = Column(db.String(5000))  # 备注
+            image = Column(db.String(500))
+        """
+
+        _d = [model.name, model.tel_cell, model.email, model.department, model.title, model.company,
+              model.original_factory, model.remarks, users[model.own] if model.own else None]
 
         date.append([",".join(i) if isinstance(i, list) else i for i in _d])
 
     return excel.make_response_from_array(date, 'xlsx', file_name='adj')
+
+
+@blueprint.route('/delete_card/<int:_id>', methods=['GET'])
+def delete_card(_id):
+    model = Cards.query.filter_by(id=_id).first()
+
+    if model.own == current_user.id:
+        model.delete()
+        flash("delete success")
+    else:
+        flash("No authority")
+
+    redirect_url = request.args.get("next") or url_for("public.lists")
+    return redirect(redirect_url)
+
