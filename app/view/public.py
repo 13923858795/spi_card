@@ -57,8 +57,12 @@ def home():
             lang = 'english'
         elif current_user.office == '台北':
             lang = 'ft'
+        else:
+            lang = 'zh'
     else:
         lang = 'zh'
+
+
     response = make_response(render_template("public/home.html", form=form))
     response.set_cookie('lang', lang)
     return response
