@@ -62,7 +62,6 @@ def home():
     else:
         lang = 'zh'
 
-
     response = make_response(render_template("public/home.html", form=form))
     response.set_cookie('lang', lang)
     return response

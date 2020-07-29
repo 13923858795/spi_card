@@ -20,7 +20,8 @@
     "remarks": "备注",
     "delete": "删除",
       "Upload_personnel": "上传人员",
-    "download": "下载"
+    "download": "下载",
+    "logout": "登出"
   },
 
    "ft": {
@@ -45,7 +46,8 @@
 
       "Upload_personnel": "上傳人員",
      "delete": "删除",
-     "download": "下載"
+     "download": "下載",
+     "logout": "登出"
   },
 
   "english": {
@@ -72,7 +74,8 @@
 
     "Upload_personnel": "Upload personnel",
     "delete": "delete",
-      "download": "download"
+      "download": "download",
+    "logout": "logout"
 
   }
 
