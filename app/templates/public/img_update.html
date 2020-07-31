@@ -3,7 +3,7 @@
         {% block content %}
 
         <div>
-            <form id="FileForm" method="post" action enctype="multipart/form-data">
+            <form id="FileForm" method="post" action enctype="multipart/form-data" onsubmit="FuncForm()">
                 {{ form.csrf_token }}
 
 
@@ -23,9 +23,13 @@
                     </center>
                 </div>
 
-                  <div class="form-group">
+                <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <input type="text" class="form-control" id="original_factory" name="original_factory" k="original_factory" >
+                        <input type="text" class="form-control" id="original_factory" name="original_factory" k="original_factory" hidden>
+
+                        <input type="text" class="form-control original_factory" k="original_factory">
+
+                        <p class="text-right"> <button type="button" class="btn btn-primary btn-sm text-right" onclick=add(this)>添加</button></p>
                     </div>
                 </div>
 
@@ -53,3 +57,34 @@
 
 
         {% endblock %}
+
+{% block js %}
+
+ <script type="text/javascript">
+
+
+      function add(dom){
+        $(dom).parent().before(' <input type="text" class="form-control original_factory">')
+      }
+
+function FuncForm(){
+
+     var data = ""
+
+     $(".original_factory").each(function(){
+
+        if (data == ""){
+            data = $(this).val();
+        }else{
+             data = data + "," + $(this).val();
+        }
+    });
+
+  $("#original_factory").val(data);
+    return false;
+}
+
+
+ </script>
+
+    {% endblock %}

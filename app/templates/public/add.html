@@ -1,73 +1,100 @@
 {% extends "layout.html" %}
 
-        {% block content %}
+{% block content %}
 
-        <div>
-            <form id="FileForm" method="post" action enctype="multipart/form-data">
-                {{ form.csrf_token }}
+<div class="container col-sm-10">
+    <form id="FileForm row" method="post" action enctype="multipart/form-data" onsubmit="FuncForm()">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            <div class="">
+                <input type="text" class="form-control" id="company" name="company" k="company">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="">
+                <input type="text" class="form-control" id="department" name="department" k="department">
+            </div>
+        </div>
 
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <input type="text" class="form-control" id="name" name="name" k="name">
-                    </div>
-                </div>
+        <div class="form-group">
+            <div class="">
+                <input type="text" class="form-control" id="name" name="name" k="name">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="">
+                <input type="text" class="form-control" id="title" name="title" k="title">
+            </div>
+        </div>
 
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <input type="text" class="form-control" id="tel_cell" name="tel_cell" k="tel_cell">
-                    </div>
-                </div>
+        <div class="form-group">
+            <div class="">
+                <input type="text" class="form-control" id="tel_cell" name="tel_cell" k="tel_cell">
+            </div>
+        </div>
 
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <input type="text" class="form-control" id="email" name="email" k="email">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <input type="text" class="form-control" id="department" name="department" k="department">
-                    </div>
-                </div>
+        <div class="form-group">
+            <div class="">
+                <input type="text" class="form-control" id="email" name="email" k="email">
+            </div>
+        </div>
+        <div class="form-group">
+                <input type="text" class="form-control" id="original_factory" name="original_factory" k="original_factory" hidden>
 
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <input type="text" class="form-control" id="title" name="title" k="title">
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <input type="text" class="form-control" id="company" name="company" k="company">
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <input type="text" class="form-control" id="original_factory" name="original_factory" k="original_factory" >
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <textarea class="form-control" id="remarks" name="remarks"  rows="3"  k = remarks></textarea>
-                    </div>
-                </div>
+                <input type="text" class="form-control original_factory" k="original_factory">
 
 
-                <div class="form-group">
-                    <center>
-                        <button type="submit" class="btn btn-default" k="save">保存</button>
-                    </center>
-                </div>
 
-            </form>
+                <p class="text-right"> <button type="button" class="btn btn-primary btn-sm text-right" onclick=add(this)>添加</button></p>
+        </div>
+        <div class="form-group">
+            <div class="">
+                <textarea class="form-control" id="remarks" name="remarks"  rows="3"  k = remarks></textarea>
+            </div>
 
         </div>
 
 
+        <div class="form-group">
+            <center>
+                <button type="submit" class="btn btn-default" k="save">保存</button>
+            </center>
+        </div>
+
+    </form>
+
+</div>
 
 
+{% endblock %}
 
-        {% endblock %}
+
+{% block js %}
+ <script type="text/javascript">
+
+
+      function add(dom){
+        $(dom).parent().before(' <input type="text" class="form-control original_factory">')
+      }
+
+function FuncForm(){
+
+     var data = ""
+
+     $(".original_factory").each(function(){
+
+        if (data == ""){
+            data = $(this).val();
+        }else{
+             data = data + "," + $(this).val();
+        }
+    });
+
+  $("#original_factory").val(data);
+    return false;
+}
+
+
+ </script>
+
+    {% endblock %}
