@@ -58,15 +58,15 @@
 
     {% include "footer.html" %}
 
+    {% block js %}
     <script src="/static/assets/jquery.min.js"></script>
     <script src="/static/assets/bootstrap.min.js"></script>
     <script src="/static/assets/jquery.cookie.min.js"></script>
-
+    <script src="/static/assets/js/bootstrap-table.min.js"></script>
     <script>
-        $(document).ready(function(){
-            var language_data
-            var lang_key = $.cookie('lang');
-            var url = "/static/lang.json";
+        var language_data;
+        var lang_key = $.cookie('lang');
+        var url = "/static/lang.json";
 
             $.ajax({
                 async: false,
@@ -77,6 +77,8 @@
                 }
             });
 
+        $(document).ready(function(){
+
             $("[k]").each(function(){
 
                 var info = language_data[$(this).attr("k")][lang_key];
@@ -84,28 +86,16 @@
                 _type = $(this)[0].tagName;
 
                 if( _type == "INPUT" || _type == "TEXTAREA" ){
-
                     $(this).attr("placeholder",info);
-
                 }else{
-
                     $(this).text(info);
                 }
-
-
-
             });
 
 
 
         });
      </script>
-
-
-    {% block js %}
-
-
-
 
     {% endblock %}
     <!-- end scripts -->

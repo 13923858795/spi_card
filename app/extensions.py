@@ -10,7 +10,7 @@ from flask_static_digest import FlaskStaticDigest
 from flask_wtf.csrf import CSRFProtect
 
 bcrypt = Bcrypt()
-csrf_protect = CSRFProtect()
+# csrf_protect = CSRFProtect()
 login_manager = LoginManager()
 db = SQLAlchemy()
 migrate = Migrate()

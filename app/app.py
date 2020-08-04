@@ -5,7 +5,7 @@ import sys, os
 import flask_excel
 from flask import Flask, render_template
 from app import commands, view
-from app.extensions import (bcrypt, cache, csrf_protect, db, debug_toolbar, flask_static_digest, login_manager, migrate)
+from app.extensions import (bcrypt, cache, db, debug_toolbar, flask_static_digest, login_manager, migrate)
 
 
 def create_app(config_object="app.settings"):
@@ -30,7 +30,7 @@ def register_extensions(app):
     bcrypt.init_app(app)
     cache.init_app(app)
     db.init_app(app)
-    csrf_protect.init_app(app)
+    # csrf_protect.init_app(app)
     login_manager.init_app(app)
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)

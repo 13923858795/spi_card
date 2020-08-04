@@ -4,35 +4,60 @@
 
 
 <p class="text-right" style="margin-right:50px;margin-top:50px;"><a href="/down" k="download">下载</a></p>
-<div>
-     <table class="table">
 
-        <thead>
-        <tr>
-            <th k="name">姓名</th>
-            <th k="company">公司名称</th>
-            <th k="Upload_personnel">上传人员</th>
-             <th k="delete">删除</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for model in dates %}
-        <tr>
-            <td>{{ model.name }}</td>
-            <td>
+    <table id="table">
 
-                <div style="width:100px; white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                    {{ model.company }}
-                </div>
-            </td>
-            <td>{{ model.own }}</td>
-            <td> <a class="nav-link" href="{{ url_for('public.delete_card', _id=model.id) }}" k="delete">删除</a></td>
-        </tr>
-        {%endfor%}
+    </table>
 
-        </tbody>
-      </table>
 
-</div>
 
 {% endblock %}
+
+
+{% block js %}
+
+{{ super() }}
+
+
+ <script type="text/javascript">
+
+      $('#table').bootstrapTable({
+
+                data: {{ dates|tojson }},
+                  cache: false, // 设置为 false 禁用 AJAX 数据缓存， 默认为true
+                  striped: true,  //表格显示条纹，默认为false
+                  pagination: true, // 在表格底部显示分页组件，默认false
+                  pageList: [10, 20], // 设置页面可以显示的数据条数
+                  pageSize: 10, // 页面数据条数
+                  pageNumber: 1, // 首页页码
+                  search:true,
+
+                 columns: [
+                            <!--{field: "id",  title: 'id', align: 'left', width:8},-->
+                            <!--{field: "crm_employee_id",  title: 'crm id', align: 'left', width:8},-->
+
+                            {field: "name",  title: language_data["name"][lang_key], k:"name", align: 'left', width:8, formatter: function (value, row, index) {
+
+                                                            if(row.image){
+                                                                    return '<p><a href="/download_image/'+ row.image+'">' +row.name+'</a></p>';
+
+                                                            }
+                                                            return row.name;
+                                                            }},
+
+
+
+
+                            {field: "company",  title: language_data["company"][lang_key], align: 'left', width:8},
+                            {field: "Upload_personnel",  title: language_data["Upload_personnel"][lang_key], align: 'left', width:8},
+                            {field: "delete",  title: language_data["delete"][lang_key], align: 'left', width:8, formatter: function (value, row, index) {
+                                                            return '<p><a href="/delete_card/'+ row.id+'">删除</a></p>';}
+                                                            }
+                  ]});
+
+
+             $('#table').bootstrapTable('hideLoading')
+ </script>
+
+{% endblock %}
+

@@ -11,7 +11,7 @@ from flask import (
     request,
     url_for,
     jsonify,
-    make_response
+    make_response, send_from_directory
 )
 from flask_login import login_required, login_user, logout_user, current_user
 
@@ -165,6 +165,7 @@ def lists():
         users[user.id] = user.nickname
 
     date = [{
+        "image": model.image,
         "id": model.id,
         "name": model.name,
         "tel_cell": model.tel_cell,
@@ -184,8 +185,7 @@ def lists():
 @blueprint.route('/down', methods=['GET'])
 def down():
     date = [[
-            "姓名", "电话", "邮箱", "部门", "职位", "公司名称", "源厂", "备注", '上传人员'
-        ]]
+            "姓名", "电话", "邮箱", "部门", "职位", "公司名称", "原厂", "备注", '上传人员', "上传时间"]]
 
     users = {}
     for user in User.query.filter_by().all():
@@ -207,11 +207,37 @@ def down():
         """
 
         _d = [model.name, model.tel_cell, model.email, model.department, model.title, model.company,
-              model.original_factory, model.remarks, users[model.own] if model.own else None]
+              model.original_factory, model.remarks, users[model.own] if model.own else None, model.created_at]
 
         date.append([",".join(i) if isinstance(i, list) else i for i in _d])
 
-    return excel.make_response_from_array(date, 'xlsx', file_name='adj')
+    return excel.make_response_from_array(date, 'xlsx', file_name='cards')
+
+
+@blueprint.route('/download_image/<string:filename>', methods=['GET'])
+def download_image(filename):
+    dirpath = os.path.join(STATIC_PATH, "photo")
+    return send_from_directory(dirpath, filename, as_attachment=True)
+
+
+
+
+
+    # if request.method == "GET":
+    #
+    #     path = os.path.join(STATIC_PATH + "/photo/", filename)
+    #
+    #     # path = os.path.join("photo/", filename)
+    #
+    #     path = "E:\\spi_card\\app\\static\\photo\\1595310102.jpg"
+    #
+    #     if os.path.isfile(path):
+    #         print(path)
+    #         return send_from_directory(path, "eww", as_attachment=True)
+    #
+    #     return "wwwwwwwwwwwww"
+
+
 
 
 @blueprint.route('/delete_card/<int:_id>', methods=['GET'])
