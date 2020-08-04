@@ -185,7 +185,7 @@ def lists():
 @blueprint.route('/down', methods=['GET'])
 def down():
     date = [[
-            "姓名", "电话", "邮箱", "部门", "职位", "公司名称", "原厂", "备注", '上传人员', "上传时间"]]
+            "公司名称", "姓名", "电话", "邮箱", "部门", "职位", "原厂", "备注", '上传人员', "上传时间"]]
 
     users = {}
     for user in User.query.filter_by().all():
@@ -206,7 +206,7 @@ def down():
             image = Column(db.String(500))
         """
 
-        _d = [model.name, model.tel_cell, model.email, model.department, model.title, model.company,
+        _d = [model.company, model.name, model.tel_cell, model.email, model.department, model.title,
               model.original_factory, model.remarks, users[model.own] if model.own else None, model.created_at]
 
         date.append([",".join(i) if isinstance(i, list) else i for i in _d])

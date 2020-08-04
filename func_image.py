@@ -1,10 +1,14 @@
 import time
 from app.services.TimingConfig import test_scheduler
+from app.app import create_app
 
-while True:
-    try:
-        test_scheduler()
-    except:
-        continue
+app = create_app()
+with app.app_context():
+    # test_scheduler()
+    while True:
+        try:
+            test_scheduler()
+        except:
+            continue
 
-    time.sleep(5)
+        time.sleep(5)
