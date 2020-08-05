@@ -175,9 +175,10 @@ def lists():
         "company": model.company,
         "original_factory": model.original_factory,
         "remarks": model.remarks,
-        "own": users[model.own] if model.own else None,
+        "Upload_personnel": users[model.own] if model.own else None,
 
     } for model in Cards.query.filter_by().all()]
+
 
     return render_template('public/lists.html', dates=date)
 
