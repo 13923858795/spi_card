@@ -11,6 +11,7 @@
   "name": {"zh": "姓名", "ft": "姓名", "english": "name"},
   "tel_cell": {"zh": "电话", "ft": "電話", "english": "tel"},
   "email": {"zh": "邮箱", "ft": "郵箱", "english": "email"},
+  "addr": {"zh": "地址(城市)", "ft": "地址(城市)", "english": "address(city)"},
   "department": {"zh": "部门", "ft": "部門", "english": "department"},
   "title": {"zh": "职位", "ft": "職位", "english": "title"},
   "company": {"zh": "公司名称", "ft": "公司名稱", "english": "company"},

@@ -27,7 +27,6 @@ def test_scheduler():
 
                 _info = info_json[k]
                 if isinstance(_info, list):
-
                     info[k] = ",".join(_info)
                 else:
                     info[k] = _info
@@ -36,7 +35,7 @@ def test_scheduler():
             model.name = info['name']
             model.email = info['email']
             model.tel_cell = info['tel_cell']
-            # model.tel_work = info['tel_work']
+            model.addr = info['addr']
             model.department = info['department']
             model.company = info['company']
             model.title = info['title']

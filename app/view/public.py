@@ -146,7 +146,7 @@ def add():
             Cards.create(name=form.name.data, email=form.email.data,tel_cell=form.tel_cell.data,
                          department=form.department.data,
                          title=form.title.data, company=form.company.data, original_factory=form.original_factory.data,
-                         remarks=form.remarks.data, is_analysis=True, own=current_user.id)
+                         remarks=form.remarks.data, is_analysis=True, own=current_user.id, addr=form.addr.data)
 
             flash("上传成功", "success")
         else:
@@ -185,7 +185,7 @@ def lists():
 @blueprint.route('/down', methods=['GET'])
 def down():
     date = [[
-            "公司名称", "姓名", "电话", "邮箱", "部门", "职位", "原厂", "备注", '上传人员', "上传时间"]]
+            "公司名称", "姓名", "电话", "邮箱", "部门", "职位", "地址", "原厂", "备注", '上传人员', "上传时间"]]
 
     users = {}
     for user in User.query.filter_by().all():
@@ -206,7 +206,7 @@ def down():
             image = Column(db.String(500))
         """
 
-        _d = [model.company, model.name, model.tel_cell, model.email, model.department, model.title,
+        _d = [model.company, model.name, model.tel_cell, model.email, model.department, model.title, model.addr,
               model.original_factory, model.remarks, users[model.own] if model.own else None, model.created_at]
 
         date.append([",".join(i) if isinstance(i, list) else i for i in _d])
@@ -218,26 +218,6 @@ def down():
 def download_image(filename):
     dirpath = os.path.join(STATIC_PATH, "photo")
     return send_from_directory(dirpath, filename, as_attachment=True)
-
-
-
-
-
-    # if request.method == "GET":
-    #
-    #     path = os.path.join(STATIC_PATH + "/photo/", filename)
-    #
-    #     # path = os.path.join("photo/", filename)
-    #
-    #     path = "E:\\spi_card\\app\\static\\photo\\1595310102.jpg"
-    #
-    #     if os.path.isfile(path):
-    #         print(path)
-    #         return send_from_directory(path, "eww", as_attachment=True)
-    #
-    #     return "wwwwwwwwwwwww"
-
-
 
 
 @blueprint.route('/delete_card/<int:_id>', methods=['GET'])

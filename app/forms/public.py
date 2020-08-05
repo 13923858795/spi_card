@@ -69,7 +69,7 @@ class CardForm(FlaskForm):
     email = StringField("邮箱", validators=[DataRequired()])
     department = StringField("部门", validators=[DataRequired()])
     title = StringField("职位", validators=[DataRequired()])
-
+    addr = StringField("地址", validators=[DataRequired()])
     company = StringField("公司", validators=[DataRequired()])
     original_factory = StringField("源厂")
     remarks = StringField("备注")

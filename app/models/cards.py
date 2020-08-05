@@ -35,7 +35,7 @@ class Cards(UserMixin, SurrogatePK, Model):
     company = Column(db.String(500))  # 公司
     original_factory = Column(db.String(500))
     remarks = Column(db.String(5000))  # 备注
-
+    addr = Column(db.String(5000))
     image = Column(db.String(500))
     is_analysis = Column(db.Boolean(), default=False)
     own = db.Column(db.Integer)  # 上传人员所属id
