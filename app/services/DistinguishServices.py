@@ -7,7 +7,7 @@ def DistinguishServices(image_path):
     host = 'https://dm-57.data.aliyun.com'
     path = '/rest/160601/ocr/ocr_business_card.json'
     method = 'POST'
-    appcode = '8ac68238be12493a93ac87cdde4eef19'
+    appcode = 'bee3857ea51b45c58bd11426247af9b4'
     querys = ''
     bodys = {}
     url = host + path
