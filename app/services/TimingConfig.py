@@ -3,9 +3,12 @@ from datetime import datetime
 from app.models.cards import Cards
 from app.services.DistinguishServices import DistinguishServices
 from app.settings import STATIC_PATH
+from app.database import db
 
 
 def test_scheduler():
+
+    db.session.commit()  # 先提交下 不然取到的都是旧数据
     models = Cards.query.filter_by(is_analysis=False).all()
 
     print(models)
