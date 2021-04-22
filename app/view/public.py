@@ -179,7 +179,6 @@ def lists():
 
     } for model in Cards.query.filter_by().all()]
 
-
     return render_template('public/lists.html', dates=date)
 
 
